@@ -29,9 +29,16 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
   result <- x$getinverse()
   if(!is.null(result)) {
+    # not sending a message here. Makes no sense, since the time-consuming
+    # action will take place at solve(). What's the purpose of the message?
+    # We already know we are calling cacheSolve.
     return(result)
   }
   mat <- x$get()
+  # this is where a message would be useful, to inform the user that an action
+  # may take longer than expected.
   tinv <- solve(mat)
+  
   x$setinverse(tinv)
+  tinv # makes no sense to return this. We don't need it, since the important action is x$setinverse
 }
